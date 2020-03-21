@@ -1,0 +1,15 @@
+.grid {
+  display: flex;
+  justify-content: center;
+}
+.grid-container {
+  display: grid;
+  border: 1px solid #000;
+  grid-auto-rows: minmax(20px, auto);
+}
+.grid-item {
+  border: 1px solid #000;
+  &.selected {
+    background: #000;
+  }
+}
