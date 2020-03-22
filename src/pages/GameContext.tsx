@@ -6,4 +6,7 @@ export interface IGameContext {
   setCells: (cells: Cell[]) => void;
 }
 
-export const GameContext = createContext<IGameContext | null>(null);
+export const GameContext = createContext({
+  toggleSelected: (index: number) => {},
+  setCells: (cells: Cell[]) => {},
+});

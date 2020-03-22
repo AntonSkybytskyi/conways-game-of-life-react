@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import './Grid.scss'
 import Cell from './Cell'
 import { sortItems } from '../utils/sortItems'
-import { GameContext } from '../pages/GameContext'
+import { GameContext, IGameContext } from '../pages/GameContext'
 
 interface GridProps {
   rows: number;
@@ -59,17 +59,17 @@ function Grid({ rows, columns, selected, cells }: GridProps) {
   const gridStyle = {
     gridTemplateColumns: `repeat(${columns}, 20px)`
   }
-  const { setCells } = useContext<any>(GameContext);
+  const { setCells } = useContext<IGameContext>(GameContext);
 
 
   useEffect(() => {
-    const _cells: Cell[] = new Array(rows * columns).fill(null).map((value, index) => {
+    const createdCells: Cell[] = new Array(rows * columns).fill(null).map((value, index) => {
       return {
         id: index,
         neighbors: getPosibleNeighborsToItem(index, columns, rows)
       }
     });
-    setCells(_cells);
+    setCells(createdCells);
   }, [rows, columns])
 
 
