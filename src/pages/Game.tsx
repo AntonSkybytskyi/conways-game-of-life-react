@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import Grid, { Cell } from '../components/Grid'
 import { GameContext } from './GameContext';
 import { sortItems } from '../utils/sortItems';
+import useInterval from '../hooks/useInterval';
 
 
 interface Map {
@@ -9,11 +10,13 @@ interface Map {
 }
 
 export default function Game() {
-  const [rows, setRows] = useState<number>(30);
-  const [columns, setColumns] = useState<number>(30);
+  const [rows, setRows] = useState<number>(10);
+  const [columns, setColumns] = useState<number>(10);
   const [seleceted, setSelected] = useState<number[]>([]);
   const [counter, setCounter] = useState<number>(0);
   const [map, setMap] = useState<Map>({});
+  const [isRunning, setIsRunning] = useState<boolean>(false);
+
   const resetGame = (): void => {
     setSelected([]);
     setCounter(0);
@@ -23,11 +26,17 @@ export default function Game() {
       event.preventDefault();
       resetGame();
       const { rows, columns } = event.target.elements;
-      setRows(rows.value);
-      setColumns(columns.value);
+      setRows(Number(rows.value));
+      setColumns(Number(columns.value));
     }, []
   )
 
+  const onStartClicked = () => {
+    setIsRunning(!isRunning);
+  }
+  useInterval(() => {
+    setCounter(counter + 1);
+  }, isRunning ? 100 : null)
   const toggleSelected = (index: number): void => {
     const updateSelected: number[] = seleceted.includes(index)
       ? seleceted.filter(item => item !== index)
@@ -61,10 +70,11 @@ export default function Game() {
         }
       }
     });
-    console.log('newSeleceted', newSelected);
     setSelected(newSelected);
-    return () => {}
-  }, [counter])
+    if (seleceted.length === 0) {
+      setIsRunning(false);
+    }
+  }, [counter]);
 
   return (
       <GameContext.Provider value={{
@@ -82,6 +92,10 @@ export default function Game() {
         <strong>{counter}</strong>
         <br />
         <button onClick={() => setCounter(counter + 1)}>Next</button>
+        <button onClick={() => onStartClicked()}>{isRunning ? 'Stop' : 'Start'}</button>
+        <button onClick={() => resetGame()}>Clean</button>
+
+
       </GameContext.Provider>
   )
 }

@@ -15,10 +15,39 @@ export interface Cell {
   id: number;
   neighbors: number[];
 }
-const getPosibleNeighborsToItem = (item: number, columns: number): number[] => {
-  const neighborsTop: number[] = [item - columns - 1, item - columns, item - columns + 1]
-  const neighborsBelow: number[] = [item + columns - 1, item + columns, item + columns + 1]
-  const neighborsOnRow: number[] = [item - 1, item + 1]
+const getLeft = (position: number, columns: number): number => {
+  return position % columns === 0 ? position + columns - 1 : position - 1;
+}
+const getRight = (position: number, columns: number): number => {
+  const result = (position + 1) % columns === 0 ? position - columns + 1 : position + 1;
+
+  return result;
+}
+const getNeighborsForOtherRow = (start: number, columns: number, rows: number): number[] => {
+  const size = columns * rows;
+  if (start < 0) {
+    // last row data
+    return [
+      getLeft(start + size, columns),
+      start + size,
+      getRight(start + size, columns),
+    ];
+  }
+  if (start >= size) {
+    // get first row
+    return [
+      getLeft(start - size, columns),
+      start - size,
+      getRight(start - size, columns),
+    ];
+  }
+  return [getLeft(start, columns), start, getRight(start, columns)];
+}
+const getPosibleNeighborsToItem = (item: number, columns: number, rows: number): number[] => {
+  const neighborsTop: number[] = getNeighborsForOtherRow(item - columns, columns, rows);
+  const neighborsBelow: number[] = getNeighborsForOtherRow(item + columns, columns, rows)
+  const neighborsOnRow: number[] = [getLeft(item, columns), getRight(item, columns)]
+
   return sortItems([
     ...neighborsTop,
     ...neighborsOnRow,
@@ -37,7 +66,7 @@ function Grid({ rows, columns, selected, cells }: GridProps) {
     const _cells: Cell[] = new Array(rows * columns).fill(null).map((value, index) => {
       return {
         id: index,
-        neighbors: getPosibleNeighborsToItem(index, columns)
+        neighbors: getPosibleNeighborsToItem(index, columns, rows)
       }
     });
     setCells(_cells);
