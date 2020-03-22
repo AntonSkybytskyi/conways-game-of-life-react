@@ -1,4 +1,4 @@
-.grid {
+.wrapper {
   display: flex;
   justify-content: center;
 }
@@ -6,10 +6,11 @@
   display: grid;
   border: 1px solid #000;
   grid-auto-rows: minmax(20px, auto);
-}
-.grid-item {
-  border: 1px solid #000;
-  &.selected {
-    background: #000;
+  .grid-item {
+    border: 1px solid #000;
+    &.selected {
+      background: #000;
+    }
   }
 }
+

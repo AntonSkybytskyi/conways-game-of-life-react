@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import classnames from 'classnames';
+import { GameContext } from '../pages/GameContext';
 
 interface CellProps {
   selected: boolean;
+  index: number;
 }
-function Cell({ selected }: CellProps) {
+function Cell({ selected, index }: CellProps) {
+  const { toggleSelected } = useContext<any>(GameContext);
   const classNameList = classnames('grid-item', { selected })
   return (
-    <div className={classNameList}></div>
+    <div className={classNameList} onClick={() => toggleSelected(index)}></div>
   )
 }
 
