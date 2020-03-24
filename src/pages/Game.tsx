@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState } from 'react'
 import Grid from '../components/Grid'
 import { GameContext } from './GameContext';
 import { sortItems } from '../utils/sortItems';
 import useInterval from '../hooks/useInterval';
 import useNextTick from '../hooks/useNextTick';
 import useGridCells from '../hooks/useGridCells';
+import GridSettings from '../components/GridSettings';
 
 export default function Game() {
   const [rows, setRows] = useState<number>(10);
@@ -18,15 +19,7 @@ export default function Game() {
     setCounter(0);
     setIsRunning(false);
   }
-  const handleSubmit = useCallback(
-    (event: any): void => {
-      event.preventDefault();
-      resetGame();
-      const { rows, columns } = event.target.elements;
-      setRows(Number(rows.value));
-      setColumns(Number(columns.value));
-    }, []
-  )
+
   useInterval(() => {
     setCounter(counter + 1);
   }, isRunning ? 100 : null);
@@ -47,13 +40,11 @@ export default function Game() {
 
   return (
       <GameContext.Provider value={{
-        toggleSelected
+        toggleSelected,
+        setRows,
+        setColumns
       }}>
-        <form onSubmit={handleSubmit}>
-          <input type="number" name="rows" placeholder="rows" />
-          <input type="number" name="columns" placeholder="columns" />
-          <button type="submit">Apply</button>
-        </form>
+        <GridSettings rows={rows} columns={columns} />
         <Grid columns={columns} cells={cells} selected={seleceted} />
 
         <br />
