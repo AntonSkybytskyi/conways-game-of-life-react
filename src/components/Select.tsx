@@ -6,7 +6,7 @@ interface SelectProps {
 }
 export default function Select({ options, onChange, selected }: SelectProps) {
   return (
-    <select name="rows" value={selected} onChange={(event: ChangeEvent<HTMLSelectElement>) => {
+    <select value={selected} onChange={(event: ChangeEvent<HTMLSelectElement>) => {
       onChange(Number(event.target.value))
     }}>
       {options.map((option, index) => {

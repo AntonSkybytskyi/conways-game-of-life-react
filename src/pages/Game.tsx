@@ -35,26 +35,26 @@ export default function Game() {
       ? seleceted.filter(item => item !== index)
       : [...seleceted, index]
 
-      setSelected(sortItems(updateSelected));
+    setSelected(sortItems(updateSelected));
   }
 
   return (
-      <GameContext.Provider value={{
-        toggleSelected,
-        setRows,
-        setColumns
-      }}>
-        <GridSettings rows={rows} columns={columns} />
-        <Grid columns={columns} cells={cells} selected={seleceted} />
+    <GameContext.Provider value={{
+      toggleSelected,
+      setRows,
+      setColumns
+    }}>
+      <GridSettings rows={rows} columns={columns} />
+      <Grid columns={columns} cells={cells} selected={seleceted} />
 
-        <br />
-        <strong>{counter}</strong>
-        <br />
+      <p>
+        <strong>Iteration: {counter}</strong>
+      </p>
+      <div>
         <button onClick={() => setCounter(counter + 1)}>Next</button>
         <button onClick={() => setIsRunning(!isRunning)}>{isRunning ? 'Stop' : 'Start'}</button>
         <button onClick={() => resetGame()}>Clean</button>
-
-
-      </GameContext.Provider>
+      </div>
+    </GameContext.Provider>
   )
 }
