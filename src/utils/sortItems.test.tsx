@@ -18,6 +18,4 @@ describe('sortItems', () => {
   test('should return empty array when data is empty', () => {
     expect(sortItems()).toEqual([]);
   })
-})
-
-
+});
